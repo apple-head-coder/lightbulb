@@ -1,0 +1,24 @@
+?start: statements
+     |  -> blank
+
+statements: (statement "&")* statement
+
+?statement: assignment | function_call
+
+assignment: value "$" id
+
+function_call: "(" value ")" "->" value
+
+?value: id -> value_of
+      | literal
+
+id: ID
+
+literal: "|" LITERAL_TYPE LITERAL_CONTENT "|"
+
+ID: /[_a-zA-Z][_0-9a-zA-Z]*/
+LITERAL_TYPE: /[is]/
+LITERAL_CONTENT: /[^|]+/
+WHITESPACE: /[ \t\n]/
+
+%ignore WHITESPACE
