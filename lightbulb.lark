@@ -1,5 +1,13 @@
+// Basic lark syntax:
+// lowercase names are rules, UPPERCASE names are tokens
+// definitions of rules can contain strings, tokens, and other rules
+// lark constructs a tree from the rules
+// ? before a rule means to not construct a node in the tree for that rule if possible
+// | in a rule gives an alternative for the rule
+// -> after an alternative gives a different name for that alternative in the tree
+
 ?start: statements
-     |  -> blank
+      |  -> blank
 
 statements: (statement "&")* statement
 

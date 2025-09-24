@@ -1,1 +1,2 @@
-(|sHello, World!|) -> text
+|sHello, World| $ myVar &
+(myVar) -> text
