@@ -41,6 +41,21 @@ class LightbulbTransformer(Transformer):
             func_version(argument)
         return run
     
+    def if_statement(self, items):
+        def run():
+            condition = items[0]()
+            on_true = items[1]  # don't call yet
+            if len(items) == 3:  # there's an else statement
+                on_false = items[2]
+            else:
+                on_false = lambda: None
+
+            if condition.value:
+                on_true()
+            else:
+                on_false()
+        return run
+    
     def value_of(self, items):
         # Value of variable from given id string
         return lambda: self.global_vars[items[0]]

@@ -1,2 +1,6 @@
-|b0| $ myVar &
-(myVar) -> text
+|bfalse| $ myVar &
+? (myVar) {
+    (|smyVar is true|) -> text
+} {
+    (|smyVar is false|) -> text
+}

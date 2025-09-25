@@ -11,11 +11,15 @@
 
 statements: (statement "&")* statement
 
-?statement: assignment | function_call
+?statement: assignment | function_call | if_statement
+
+?code_block: "{" statements "}"
 
 assignment: value "$" id
 
 function_call: "(" value ")" "->" value
+
+if_statement: "?" "(" value ")" code_block code_block?
 
 ?value: id -> value_of
       | literal
