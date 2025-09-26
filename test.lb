@@ -1,6 +1,6 @@
-|bfalse| $ myVar &
-? (myVar) {
-    (|smyVar is true|) -> text
-} {
-    (|smyVar is false|) -> text
-}
+|bf| $ a &
+|bt| $ b &
+
+? ((b).^and -> a) { (|sa and b are true   |) -> text } &
+? ((b).^or -> a) { (|sa or b is true   |) -> text } &
+? (().^not -> a) { (|sa is not true   |) -> text }

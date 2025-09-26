@@ -17,18 +17,21 @@ statements: (statement "&")* statement
 
 assignment: value "$" id
 
-function_call: "(" value ")" "->" value
+function_call: "(" cvalues ")" ("." id)? "->" value
 
 if_statement: "?" "(" value ")" code_block code_block?
 
+cvalues: (value ",")* value |
+
 ?value: id -> value_of
       | literal
+      | function_call
 
 id: ID
 
 literal: "|" LITERAL_TYPE LITERAL_CONTENT "|"
 
-ID: /[_a-zA-Z][_0-9a-zA-Z]*/
+ID: /([_a-zA-Z]|\^+)[_0-9a-zA-Z]*/
 LITERAL_TYPE: /[isb]/
 LITERAL_CONTENT: /[^|]+/
 WHITESPACE: /[ \t\n]/

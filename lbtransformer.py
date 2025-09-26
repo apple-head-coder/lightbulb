@@ -34,11 +34,17 @@ class LightbulbTransformer(Transformer):
     
     def function_call(self, items):
         def run():
-            argument = items[0]()
-            func = items[1]()
-            func_version = func.default()
+            arguments = items[0]()
+            
+            if len(items) == 3:  # called with version
+                version_name = items[1]
+                func = items[2]()
+                func_version = func.version(version_name)
+            else:  # called as default
+                func = items[1]()
+                func_version = func.default()
 
-            func_version(argument)
+            return func_version(*arguments)
         return run
     
     def if_statement(self, items):
@@ -55,6 +61,10 @@ class LightbulbTransformer(Transformer):
             else:
                 on_false()
         return run
+    
+    def cvalues(self, items):
+        # List of values separated by a comma
+        return lambda: [value() for value in items]
     
     def value_of(self, items):
         # Value of variable from given id string
