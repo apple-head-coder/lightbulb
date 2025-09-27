@@ -29,11 +29,11 @@ cvalues: (value ",")* value |
 
 id: ID
 
-literal: "|" LITERAL_TYPE LITERAL_CONTENT "|"
+literal: "|" LITERAL_TYPE LITERAL_CONTENT? "|"
 
 ID: /([_a-zA-Z]|\^+)[_0-9a-zA-Z]*/
 LITERAL_TYPE: /[isb]/
-LITERAL_CONTENT: /[^|]+/
+LITERAL_CONTENT: /(?s)(\\.|[^|\\])+/
 WHITESPACE: /[ \t\n]/
 
 %ignore WHITESPACE

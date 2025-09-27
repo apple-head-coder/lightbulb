@@ -1,6 +1,7 @@
 from lark import Transformer
 
-from builtin_functions import text, create_lbint, create_lbstring, create_lbboolean
+from builtin_functions import *
+from literal_parsers import *
 
 
 # Transformers transform a tree into a single value by calling the corresponding
@@ -77,16 +78,15 @@ class LightbulbTransformer(Transformer):
     def literal(self, items):
         def run():
             literal_type = items[0]
-            literal_value = items[1]
+            if len(items) == 2:  # non-empty literal
+                literal_value = items[1]
+            else:
+                literal_value = ""
 
             if literal_type == "i":  # integer
                 return create_lbint(int(literal_value))
             if literal_type == "s":  # string
-                return create_lbstring(literal_value)
+                return create_lbstring(parse_string(literal_value))
             if literal_type == "b":  # boolean
-                if literal_value in ("1", "t", "true"):
-                    return create_lbboolean(True)
-                elif literal_value in ("0", "f", "false"):
-                    return create_lbboolean(False)
-                raise ValueError(f"Invalid boolean literal: {literal_value}")
+                return create_lbboolean(parse_boolean(literal_value))
         return run
