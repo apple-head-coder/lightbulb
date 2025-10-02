@@ -33,9 +33,36 @@ class LightbulbTransformer(Transformer):
             self.global_vars[var_name] = var_value
         return run
     
-    def function_call(self, items):
+    def if_statement(self, items):
+        def run():
+            condition = items[0]()
+            condition_bool = condition.version("^^b")()  # ().^^b -> condition
+
+            on_true = items[1]  # don't call yet
+            if len(items) == 3:  # there's an else statement
+                on_false = items[2]
+            else:
+                on_false = lambda: None
+
+            if condition_bool.value:
+                on_true()
+            else:
+                on_false()
+        return run
+    
+    def cvalues(self, items):
+        # List of values separated by a comma
+        return lambda: [value() for value in items]
+
+    def op_or(self, items): return lambda: items[0]().version("^or")(items[1]())
+    def op_and(self, items): return lambda: items[0]().version("^and")(items[1]())
+    def op_not(self, items): return lambda: items[0]().version("^not")()
+
+    def op_call(self, items):
         def run():
             arguments = items[0]()
+            if not isinstance(arguments, list):
+                arguments = [arguments]
             
             if len(items) == 3:  # called with version
                 version_name = items[1]
@@ -47,25 +74,6 @@ class LightbulbTransformer(Transformer):
 
             return func_version(*arguments)
         return run
-    
-    def if_statement(self, items):
-        def run():
-            condition = items[0]()
-            on_true = items[1]  # don't call yet
-            if len(items) == 3:  # there's an else statement
-                on_false = items[2]
-            else:
-                on_false = lambda: None
-
-            if condition.value:
-                on_true()
-            else:
-                on_false()
-        return run
-    
-    def cvalues(self, items):
-        # List of values separated by a comma
-        return lambda: [value() for value in items]
     
     def value_of(self, items):
         # Value of variable from given id string

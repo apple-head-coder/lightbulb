@@ -1,8 +1,8 @@
 |bf| $ a &
 |bt| $ b &
 
-? ((b).^and -> a) { (|s\| a and b are true \|\n|) -> text } &
-? ((b).^or -> a) { (|s\| a or b is true \|\n|) -> text } &
-? (().^not -> a) { (|s\| a is not true \|\n|) -> text } &
+? (a :: b) { (|s\| a and b are true \|\n|) -> text } &
+? (a :; b) { (|s\| a or b is true \|\n|) -> text } &
+? (; a) { (|s\| a is not true \|\n|) -> text } &
 
 (|s\x1b[31mRed!!\x1b[39m\n|) -> text

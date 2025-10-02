@@ -4,28 +4,33 @@
 // lark constructs a tree from the rules
 // ? before a rule means to not construct a node in the tree for that rule if possible
 // | in a rule gives an alternative for the rule
-// -> after an alternative gives a different name for that alternative in the tree
+// -> after an alternative gives a different name in the tree
 
 ?start: statements
       |  -> blank
 
 statements: (statement "&")* statement
 
-?statement: assignment | function_call | if_statement
-
 ?code_block: "{" statements "}"
+
+?statement: value | assignment | if_statement
 
 assignment: value "$" id
 
-function_call: "(" cvalues ")" ("." id)? "->" value
-
 if_statement: "?" "(" value ")" code_block code_block?
 
-cvalues: (value ",")* value |
+cvalues: (value ",")* value?
 
-?value: id -> value_of
-      | literal
-      | function_call
+?value: op_or
+
+?op_or: op_or ":;" op_and | op_and
+?op_and: op_and "::" op_not | op_not
+?op_not: ";" op_not -> op_not | op_call
+?op_call: (paren_value | "(" cvalues ")") ("." id)? "->" op_call | immediate_value
+
+?immediate_value: id -> value_of | literal | paren_value
+
+?paren_value: "(" value ")"
 
 id: ID
 
