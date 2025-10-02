@@ -6,3 +6,11 @@
 ? (; a) { (|s\| a is not true \|\n|) -> text } &
 
 (|s\x1b[31mRed!!\x1b[39m\n|) -> text
+
+~ comment ~
+
+~
+Multi-
+line
+comment 
+~

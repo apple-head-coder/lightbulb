@@ -39,6 +39,8 @@ literal: "|" LITERAL_TYPE LITERAL_CONTENT? "|"
 ID: /([_a-zA-Z]|\^+)[_0-9a-zA-Z]*/
 LITERAL_TYPE: /[isb]/
 LITERAL_CONTENT: /(?s:(\\.|[^|\\])+)/
+COMMENT: /~[^~]*~/
 WHITESPACE: /[ \t\n]/
 
 %ignore WHITESPACE
+%ignore COMMENT
