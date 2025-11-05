@@ -49,6 +49,16 @@ class LightbulbTransformer(Transformer):
             else:
                 on_false()
         return run
+
+    def while_loop(self, items):
+        def run():
+            condition = items[0]  # don't call yet
+
+            inner = items[1] # don't call yet
+
+            while condition().version("^^b")().value:  # ().^^b -> () -> condition
+                inner()
+        return run
     
     def cvalues(self, items):
         # List of values separated by a comma
@@ -57,6 +67,53 @@ class LightbulbTransformer(Transformer):
     def op_or(self, items): return lambda: items[0]().version("^or")(items[1]())
     def op_and(self, items): return lambda: items[0]().version("^and")(items[1]())
     def op_not(self, items): return lambda: items[0]().version("^not")()
+
+    def op_comp(self, items):
+        def run():
+            op = items[1]
+            if op == "=":
+                version = "^eq"
+            elif op == ";=":
+                version = "^neq"
+            elif op == "<":
+                version = "^less"
+            elif op == ">":
+                version = "^gtr"
+            elif op == "<=":
+                version = "^leq"
+            elif op == ">=":
+                version = "^geq"
+            
+            left = items[0]()
+            right = items[2]()
+            return left.version(version)(right)
+        return run
+
+    def op_addsub(self, items):
+        def run():
+            op = items[1]
+            if op == "+":
+                version = "^add"
+            elif op == "-":
+                version = "^sub"
+
+            left = items[0]()
+            right = items[2]()
+            return left.version(version)(right)
+        return run
+    
+    def op_muldiv(self, items):
+        def run():
+            op = items[1]
+            if op == "*":
+                version = "^mul"
+            elif op == "/":
+                version = "^div"
+            
+            left = items[0]()
+            right = items[2]()
+            return left.version(version)(right)
+        return run
 
     def op_call(self, items):
         def run():

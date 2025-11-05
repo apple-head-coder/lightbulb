@@ -5,7 +5,19 @@
 ? (a :; b) { (|s\| a or b is true \|\n|) -> text } &
 ? (; a) { (|s\| a is not true \|\n|) -> text } &
 
-(|s\x1b[31mRed!!\x1b[39m\n|) -> text
+(|s\x1b[31mRed!!\x1b[39m\n|) -> text &
+
+|i40| - |i5| * |i7| $ x &
+().^^s -> x $ x &
+(|s40-5*7 is: | + x + |s\n|) -> text &
+
+|i0| $ i &
+# (i < |i100|) {
+    (i) -> text &
+    (|s |) -> text &
+    i + |i1| $ i
+} &
+(|s\n|) -> text
 
 ~ comment ~
 
