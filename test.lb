@@ -17,7 +17,13 @@
     (|s |) -> text &
     i + |i1| $ i
 } &
-(|s\n|) -> text
+(|s\n\n|) -> text &
+
+|i0| $ sum &
+*** (|i1| $ n & n <= |i100| & n + |i1| $ n) {
+    sum + n $ sum
+} &
+(|s1 + 2 + ... + 100 = | + ().^^s -> sum + |s\n|) -> text
 
 ~ comment ~
 

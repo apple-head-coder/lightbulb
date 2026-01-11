@@ -60,6 +60,20 @@ class LightbulbTransformer(Transformer):
                 inner()
         return run
     
+    def for_loop(self, items):
+        def run():
+            # Don't call these yet
+            first = items[0]
+            condition = items[1]
+            second = items[2]
+            inner = items[3]
+
+            first()
+            while condition().version("^^b")().value:  # ().^^b -> () -> condition
+                inner()
+                second()
+        return run
+    
     def cvalues(self, items):
         # List of values separated by a comma
         return lambda: [value() for value in items]
